@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { IonItem, IonLabel, IonList } from '@ionic/react';
+import { IonItem, IonLabel, IonList, IonModal } from '@ionic/react';
 import './IonList.css';
+import './ionModal';
 
 function Example() {
   const [data, setData] = useState<any[]>([]);
@@ -25,6 +26,7 @@ function Example() {
           <IonLabel className='ionLabel'>
             <img src={persona.picture.thumbnail} alt="" />
             <p className='nombres'>{persona.name?.first + ", " + persona.name?.last}</p>
+            <IonModal/>
           </IonLabel>
         </IonItem>
       ))}
