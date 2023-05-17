@@ -1,0 +1,7 @@
+{
+  "name": "trabajoPractico4",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
