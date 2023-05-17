@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { IonItem, IonLabel, IonList, IonModal } from '@ionic/react';
-import './IonList.css';
+import './ExploreContainer.css';
 
 
 interface ExampleProps {
