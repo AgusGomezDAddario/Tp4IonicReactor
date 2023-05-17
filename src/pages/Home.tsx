@@ -1,7 +1,6 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import Example from '../components/IonList';
-
-
+import Modal from '../components/Modal';
 import './Home.css';
 
 const Home: React.FC = () => {

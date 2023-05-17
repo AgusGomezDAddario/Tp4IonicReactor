@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { IonItem, IonLabel, IonList, IonModal } from '@ionic/react';
 import './IonList.css';
-import './ionModal';
+import ExampleModal from './Modal';
 
 function Example() {
   const [data, setData] = useState<any[]>([]);
@@ -22,14 +22,14 @@ function Example() {
   return (
     <IonList>
       {data.map((persona, index) => (
-        <IonItem key={index}>
+        <IonItem className="item" key={index} type='button'>
           <IonLabel className='ionLabel'>
             <img src={persona.picture.thumbnail} alt="" />
             <p className='nombres'>{persona.name?.first + ", " + persona.name?.last}</p>
-            <IonModal/>
           </IonLabel>
         </IonItem>
       ))}
+      <ExampleModal />
     </IonList>
   );
 }
