@@ -1,25 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { IonItem, IonLabel, IonList } from '@ionic/react';
+import './IonList.css';
 
 function Example() {
+  const [data, setData] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch('https://randomuser.me/api/?results=10')
+      .then(response => response.json())
+      .then(data => {
+        console.log(data.results);
+        setData(data.results);
+        console.log(data.results[0].picture.thumbnail)
+      })
+      .catch(error => {
+        console.log('Error:', error);
+      });
+  }, []);
+
   return (
     <IonList>
-      <IonItem>
-        <IonLabel>Pokémon Yellow</IonLabel>
-      </IonItem>
-      <IonItem>
-        <IonLabel>Mega Man X</IonLabel>
-      </IonItem>
-      <IonItem>
-        <IonLabel>The Legend of Zelda</IonLabel>
-      </IonItem>
-      <IonItem>
-        <IonLabel>Pac-Man</IonLabel>
-      </IonItem>
-      <IonItem>
-        <IonLabel>Super Mario World</IonLabel>
-      </IonItem>
+      {data.map((persona, index) => (
+        <IonItem key={index}>
+          <IonLabel className='ionLabel'>
+            <img src={persona.picture.thumbnail} alt="" />
+            <p className='nombres'>{persona.name?.first + ", " + persona.name?.last}</p>
+          </IonLabel>
+        </IonItem>
+      ))}
     </IonList>
   );
 }
+
 export default Example;

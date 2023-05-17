@@ -41,14 +41,4 @@ const App: React.FC = () => (
   </IonApp>
 );
 
-fetch('https://randomuser.me/api/')
-  .then(response => response.json())
-  .then(data => {
-    console.log(data.results[0].name.first);
-  })
-  .catch(error => {
-    console.log('Error:', error);
-  });
-
-
 export default App;

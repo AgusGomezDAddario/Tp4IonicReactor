@@ -1,4 +1,6 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import Example from '../components/IonList';
+
 
 import './Home.css';
 
@@ -16,7 +18,7 @@ const Home: React.FC = () => {
             <IonTitle size="large">API Random User</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <h1>Lista de usuarios consumidos de la API</h1>
+        <Example />
       </IonContent>
     </IonPage>
   );

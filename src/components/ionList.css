@@ -1,0 +1,10 @@
+.ionLabel{
+    display: flex !important;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.nombres{
+    margin-left: 1rem !important;
+}
