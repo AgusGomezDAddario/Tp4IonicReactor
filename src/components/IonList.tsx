@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { IonItem, IonLabel, IonList, IonModal } from '@ionic/react';
 import './IonList.css';
-import ExampleModal from './Modal';
+
 
 interface ExampleProps {
   setShowModal: Function;
