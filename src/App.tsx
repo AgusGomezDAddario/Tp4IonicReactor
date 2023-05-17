@@ -2,6 +2,8 @@ import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
+import Example from './components/IonList'; 
+
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -38,5 +40,15 @@ const App: React.FC = () => (
     </IonReactRouter>
   </IonApp>
 );
+
+fetch('https://randomuser.me/api/')
+  .then(response => response.json())
+  .then(data => {
+    console.log(data.results[0].name.first);
+  })
+  .catch(error => {
+    console.log('Error:', error);
+  });
+
 
 export default App;
