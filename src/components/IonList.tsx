@@ -3,8 +3,17 @@ import { IonItem, IonLabel, IonList, IonModal } from '@ionic/react';
 import './IonList.css';
 import ExampleModal from './Modal';
 
-function Example() {
+interface ExampleProps {
+  setShowModal: Function;
+  setPersona: Function;
+  persona: any[];
+}
+
+const Example = (
+  { setShowModal, setPersona, persona }: ExampleProps) => {
+
   const [data, setData] = useState<any[]>([]);
+  
 
   useEffect(() => {
     fetch('https://randomuser.me/api/?results=10')
@@ -22,14 +31,18 @@ function Example() {
   return (
     <IonList>
       {data.map((persona, index) => (
-        <IonItem className="item" key={index} type='button'>
+        <IonItem className="item" key={index} button
+          onClick={() => {
+            setShowModal(true);
+            setPersona(persona);
+          }}>
           <IonLabel className='ionLabel'>
             <img src={persona.picture.thumbnail} alt="" />
             <p className='nombres'>{persona.name?.first + ", " + persona.name?.last}</p>
           </IonLabel>
         </IonItem>
       ))}
-      <ExampleModal />
+
     </IonList>
   );
 }

@@ -1,7 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { IonButtons, IonButton, IonModal, IonHeader, IonContent, IonToolbar, IonTitle, IonPage } from '@ionic/react';
 
-function ExampleModal() {
+interface ExampleProps {
+  setShowModal: Function;
+  showModal: boolean;
+  persona: any;
+}
+
+const ExampleModal = ({setShowModal, showModal, persona} : ExampleProps) => {
   const modal = useRef<HTMLIonModalElement>(null);
   const page = useRef(null);
 
@@ -19,13 +25,12 @@ function ExampleModal() {
     return role !== 'gesture';
   }
 
+
+  console.log(9)
+  console.log(showModal)
   return (
-    <IonPage ref={page}>
-      <IonContent className="ion-padding">
-        <IonButton id="open-modal" expand="block">
-          Open
-        </IonButton>
-        <IonModal ref={modal} trigger="open-modal" canDismiss={canDismiss} presentingElement={presentingElement!}>
+    <div>
+        <IonModal isOpen={showModal} ref={modal} trigger="open-modal" canDismiss={canDismiss} presentingElement={presentingElement!}>
           <IonHeader>
             <IonToolbar>
               <IonTitle>Modal</IonTitle>
@@ -35,14 +40,11 @@ function ExampleModal() {
             </IonToolbar>
           </IonHeader>
           <IonContent className="ion-padding">
-            <p>
-              To close this modal, please use the "Close" button provided. Note that swiping the modal will not dismiss
-              it.
-            </p>
+            <img src={persona.picture.medium} alt="" />
+            <p>{persona.name?.first}</p>
           </IonContent>
         </IonModal>
-      </IonContent>
-    </IonPage>
+    </div>
   );
 }
 
