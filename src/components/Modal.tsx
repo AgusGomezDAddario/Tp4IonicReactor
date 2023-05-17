@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { IonButtons, IonButton, IonModal, IonHeader, IonContent, IonToolbar, IonTitle, IonPage } from '@ionic/react';
+import { IonButtons, IonButton, IonModal, IonHeader, IonContent, IonToolbar, IonTitle } from '@ionic/react';
 
 interface ExampleProps {
   setShowModal: Function;
@@ -7,45 +7,37 @@ interface ExampleProps {
   persona: any;
 }
 
-const ExampleModal = ({setShowModal, showModal, persona} : ExampleProps) => {
+const ExampleModal = ({ setShowModal, showModal, persona }: ExampleProps) => {
   const modal = useRef<HTMLIonModalElement>(null);
-  const page = useRef(null);
-
-  const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
-
-  useEffect(() => {
-    setPresentingElement(page.current);
-  }, []);
 
   function dismiss() {
-    modal.current?.dismiss();
+    setShowModal(false);
   }
 
-  async function canDismiss(data?: any, role?: string) {
-    return role !== 'gesture';
-  }
+  useEffect(() => {
+    if (showModal) {
+      modal.current?.present();
+    } else {
+      modal.current?.dismiss();
+    }
+  }, [showModal]);
 
-
-  console.log(9)
-  console.log(showModal)
   return (
-    <div>
-        <IonModal isOpen={showModal} ref={modal} trigger="open-modal" canDismiss={canDismiss} presentingElement={presentingElement!}>
-          <IonHeader>
-            <IonToolbar>
-              <IonTitle>Modal</IonTitle>
-              <IonButtons slot="end">
-                <IonButton onClick={() => dismiss()}>Close</IonButton>
-              </IonButtons>
-            </IonToolbar>
-          </IonHeader>
-          <IonContent className="ion-padding">
-            <img src={persona.picture.medium} alt="" />
-            <p>{persona.name?.first}</p>
-          </IonContent>
-        </IonModal>
-    </div>
+    <IonModal isOpen={showModal} ref={modal}>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Modal</IonTitle>
+          <IonButtons slot="end">
+            <IonButton onClick={() => dismiss()}>Close</IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent className="ion-padding">
+        <img src={persona.picture.medium} alt="" />
+        <p>{persona.name?.first}</p>
+      </IonContent>
+    </IonModal>
   );
 }
 
-export default ExampleModal
+export default ExampleModal;
