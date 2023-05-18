@@ -1,0 +1,19 @@
+.ionLabel{
+    display: flex !important;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.nombres{
+    margin-left: 1rem !important;
+}
+
+.item{
+    cursor: pointer;
+    background-color: red !important;
+}
+
+.item:hover{
+    background-color: #e6e6e6 !important;
+}

@@ -1,9 +1,15 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import Example from '../components/IonList';
-import Modal from '../components/Modal';
+import ExampleModal from '../components/Modal';
 import './Home.css';
+import React, { useState, useRef, useEffect } from 'react'
 
 const Home: React.FC = () => {
+  
+  const [showModal, setShowModal] = useState(false);
+  const [persona, setPersona] = useState<any[]>([]);
+  console.log(showModal)
+
   return (
     <IonPage>
       <IonHeader>
@@ -17,8 +23,12 @@ const Home: React.FC = () => {
             <IonTitle size="large">API Random User</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <Example />
+        <Example 
+          setShowModal={setShowModal}
+          setPersona={setPersona}
+          persona={persona}/>
       </IonContent>
+      {showModal ? <ExampleModal persona={persona} setShowModal={setShowModal} showModal={showModal}/> : null}
     </IonPage>
   );
 };
