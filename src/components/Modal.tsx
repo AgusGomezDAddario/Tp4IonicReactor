@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { IonButtons, IonButton, IonModal, IonHeader, IonContent, IonToolbar, IonTitle } from '@ionic/react';
+import { IonModal, IonContent } from '@ionic/react';
 import './Modal.css';
 
 interface ExampleProps {
@@ -24,22 +24,22 @@ const ExampleModal = ({ setShowModal, showModal, persona }: ExampleProps) => {
   }, [showModal]);
 
   return (
-    <IonModal isOpen={showModal} ref={modal}>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Modal</IonTitle>
-          <IonButtons slot="end">
-            <IonButton onClick={() => dismiss()}>Close</IonButton>
-          </IonButtons>
-        </IonToolbar>
-      </IonHeader>
+    <IonModal
+      isOpen={showModal}
+      onDidDismiss={dismiss}
+      initialBreakpoint={0.25}
+      breakpoints={[0, 0.25, 0.5, 0.75]}
+      handleBehavior="cycle"
+    >
       <IonContent className="ion-padding">
-        <div className="imagen"> <img src={persona.picture.large} alt="" /> </div>
-        <div className="texto">
-          <p>Nombre: {persona.name?.first}</p>
-          <p>Apellido: {persona.name?.last}</p>
-          <p>Genero: {persona.gender}</p>
-          <p>Email: {persona.email}</p>
+        <div className="ion-margin-top">
+          <div className="imagen"> <img src={persona.picture.large} alt="" /> </div>
+          <div className="texto">
+            <p>Nombre: {persona.name?.first}</p>
+            <p>Apellido: {persona.name?.last}</p>
+            <p>Género: {persona.gender}</p>
+            <p>Email: {persona.email}</p>
+          </div>
         </div>
       </IonContent>
     </IonModal>
@@ -47,3 +47,4 @@ const ExampleModal = ({ setShowModal, showModal, persona }: ExampleProps) => {
 }
 
 export default ExampleModal;
+
