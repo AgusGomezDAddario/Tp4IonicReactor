@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { IonButtons, IonButton, IonModal, IonHeader, IonContent, IonToolbar, IonTitle } from '@ionic/react';
+import './Modal.css';
 
 interface ExampleProps {
   setShowModal: Function;
@@ -33,8 +34,13 @@ const ExampleModal = ({ setShowModal, showModal, persona }: ExampleProps) => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
-        <img src={persona.picture.medium} alt="" />
-        <p>{persona.name?.first}</p>
+        <div className="imagen"> <img src={persona.picture.large} alt="" /> </div>
+        <div className="texto">
+          <p>Nombre: {persona.name?.first}</p>
+          <p>Apellido: {persona.name?.last}</p>
+          <p>Genero: {persona.gender}</p>
+          <p>Email: {persona.email}</p>
+        </div>
       </IonContent>
     </IonModal>
   );
