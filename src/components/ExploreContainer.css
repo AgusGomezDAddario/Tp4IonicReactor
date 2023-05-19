@@ -17,3 +17,7 @@
 .item:hover{
     background-color: #e6e6e6 !important;
 }
+
+.perfilImg{
+    border-radius: 2rem ;
+}

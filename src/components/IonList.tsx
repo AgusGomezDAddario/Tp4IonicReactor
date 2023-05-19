@@ -15,7 +15,7 @@ import {
 } from '@ionic/react';
 import { trash } from 'ionicons/icons';
 import Loader from './loader';
-import './IonList.css';
+import './ExploreContainer.css';
 
 interface ExampleProps {
   setShowModal: Function;
