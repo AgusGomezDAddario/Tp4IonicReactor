@@ -65,6 +65,64 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
     event.detail.complete();
   }
 
+  function agregar1Random() {
+    const datosExistentes = localStorage.getItem('data');
+    console.log(datosExistentes);
+    if(datosExistentes !== null) {
+    fetch('https://randomuser.me/api/?results=1')
+          .then(response => response.json())
+          .then(data => {
+            console.log(data.results[0]);
+            const datosArray = JSON.parse(datosExistentes);
+            const newData = [...datosArray, ...data.results];
+            // Guardar los datos en el localStorage
+            localStorage.setItem('data', JSON.stringify(newData));
+            setData(newData);
+            console.log(data.results[0].picture.thumbnail);
+            console.log(newData);
+
+          })
+  }}
+
+  function agregar5Random() {
+    const datosExistentes = localStorage.getItem('data');
+    console.log(datosExistentes);
+    if(datosExistentes !== null) {
+    fetch('https://randomuser.me/api/?results=5')
+          .then(response => response.json())
+          .then(data => {
+            console.log(data.results[0]);
+            const datosArray = JSON.parse(datosExistentes);
+            const newData = [...datosArray, ...data.results];
+            // Guardar los datos en el localStorage
+            localStorage.setItem('data', JSON.stringify(newData));
+            setData(newData);
+            console.log(data.results[0].picture.thumbnail);
+            console.log(newData);
+
+          })
+  }
+  }
+  function agregar10Random() {
+    const datosExistentes = localStorage.getItem('data');
+    console.log(datosExistentes);
+    if(datosExistentes !== null) {
+    fetch('https://randomuser.me/api/?results=10')
+          .then(response => response.json())
+          .then(data => {
+            console.log(data.results[0]);
+            const datosArray = JSON.parse(datosExistentes);
+            const newData = [...datosArray, ...data.results];
+            // Guardar los datos en el localStorage
+            localStorage.setItem('data', JSON.stringify(newData));
+            setData(newData);
+            console.log(data.results[0].picture.thumbnail);
+            console.log(newData);
+
+          })
+  }
+  }
+
   function handleDeleteItem(index: number, name: string) {
     presentAlert({
       header: `¿Desea Eliminar a ${name}?`,
@@ -138,6 +196,11 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
       </IonReorderGroup>
     </IonList>
     }
+     <div className='buttonsAdds'>
+      <IonButton onClick={agregar1Random}>+1</IonButton>
+      <IonButton onClick={agregar5Random}>+5</IonButton>
+      <IonButton onClick={agregar10Random}>+10</IonButton>
+      </div>
     </div>
     
   );

@@ -1,23 +1,30 @@
-.ionLabel{
+.ionLabel {
     display: flex !important;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
 }
 
-.nombres{
+.nombres {
     margin-left: 1rem !important;
 }
 
-.item{
+.item {
     cursor: pointer;
     background-color: red !important;
 }
 
-.item:hover{
+.item:hover {
     background-color: #e6e6e6 !important;
 }
 
-.perfilImg{
-    border-radius: 2rem ;
+.perfilImg {
+    border-radius: 2rem;
+}
+
+.buttonsAdds {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    padding-left: 1rem;
 }
