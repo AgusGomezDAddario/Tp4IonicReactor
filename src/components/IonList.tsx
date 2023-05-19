@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { IonButton, useIonAlert } from '@ionic/react';
+import { Toast } from '@capacitor/toast';
 import {
   IonItem,
   IonLabel,
@@ -64,13 +65,19 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
             const newData = [...data];
             newData.splice(index, 1);
             setData(newData);
+            showHelloToast(); // Llama a la función para mostrar el toast
           },
         },
       ],
       onDidDismiss: (e: CustomEvent) => setRoleMessage(`Dismissed with role: ${e.detail.role}`),
-    })
+    });
   }
 
+  async function showHelloToast() {
+    Toast.show({
+      text: 'Eliminado con éxito!',
+    });
+  }
   return (
     <IonList>
       <IonReorderGroup disabled={false} onIonItemReorder={handleReorder}>
