@@ -86,6 +86,9 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
             setData(newData);
             showHelloToast(); // Llama a la función para mostrar el toast
             setKey(prevKey => prevKey + 1); // Actualizamos la clave única
+            console.log(newData);
+            localStorage.setItem('data', JSON.stringify(newData));
+            setData(newData);
           },
         },
       ],
