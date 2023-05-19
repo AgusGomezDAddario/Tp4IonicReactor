@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { IonButton, useIonAlert } from '@ionic/react';
+import { IonButton, IonContent, useIonAlert } from '@ionic/react';
 import {
   IonItem,
   IonLabel,
   IonList,
   IonModal,
   IonIcon,
-  IonItemOption,
-  IonItemOptions,
   IonItemSliding,
+  IonItemOptions,
+  IonItemOption,
   IonReorder,
   IonReorderGroup,
   ItemReorderEventDetail,
 } from '@ionic/react';
 import { trash } from 'ionicons/icons';
+import Loader from './loader';
+import './IonList.css';
 
 interface ExampleProps {
   setShowModal: Function;
@@ -26,18 +28,35 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
   const [presentAlert] = useIonAlert();
   const [handlerMessage, setHandlerMessage] = useState('');
   const [roleMessage, setRoleMessage] = useState('');
+  const [key, setKey] = useState(0); // Agregamos una clave única
+  const [load, setLoad] = useState(false);
 
   useEffect(() => {
-    fetch('https://randomuser.me/api/?results=10')
-      .then(response => response.json())
-      .then(data => {
-        console.log(data.results);
-        setData(data.results);
-        console.log(data.results[0].picture.thumbnail);
-      })
-      .catch(error => {
-        console.log('Error:', error);
-      });
+      setTimeout(() => {
+        if (!localStorage.getItem('data')) {
+        fetch('https://randomuser.me/api/?results=10')
+          .then(response => response.json())
+          .then(data => {
+            console.log(data.results);
+            // Guardar los datos en el localStorage
+            localStorage.setItem('data', JSON.stringify(data.results));
+            setData(data.results);
+            console.log(data.results[0].picture.thumbnail);
+          })
+          .catch(error => {
+            console.log('Error:', error);
+          })
+          .finally(() => {
+            setLoad(true);
+          });
+        } else {
+          // Obtener los datos del localStorage
+          const storedData = localStorage.getItem('data');
+          const parsedData = storedData !== null ? JSON.parse(storedData) : null;
+          setData(parsedData);
+          setLoad(true);
+        }
+      }, 1000);
   }, []);
 
   function handleReorder(event: CustomEvent<ItemReorderEventDetail>) {
@@ -45,9 +64,9 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
     event.detail.complete();
   }
 
-  function handleDeleteItem(index: number) {
+  function handleDeleteItem(index: number, name: string) {
     presentAlert({
-      header: '¿Desea Eliminar?',
+      header: `¿Desea Eliminar a ${name}?`,
       buttons: [
         {
           text: 'Cancelar',
@@ -64,6 +83,7 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
             const newData = [...data];
             newData.splice(index, 1);
             setData(newData);
+            setKey(prevKey => prevKey + 1); // Actualizamos la clave única
           },
         },
       ],
@@ -72,7 +92,10 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
   }
 
   return (
-    <IonList>
+    <div>
+      {
+      !load ? <Loader /> 
+      : <IonList key={key}> {/* Utilizamos la clave única en la lista */}
       <IonReorderGroup disabled={false} onIonItemReorder={handleReorder}>
         {data.map((persona, index) => (
           <IonItemSliding key={index}>
@@ -85,7 +108,7 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
               }}
             >
               <IonLabel className="ionLabel">
-                <img src={persona.picture.thumbnail} alt="" />
+                <img src={persona.picture.thumbnail} alt="" className='perfilImg'/>
                 <p className="nombres">
                   {persona.name?.first + ', ' + persona.name?.last}
                 </p>
@@ -94,7 +117,7 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
             </IonItem>
             <IonItemOptions side="end">
               <IonItemOption
-                onClick={() => handleDeleteItem(index)}
+                onClick={() => handleDeleteItem(index, persona.name?.first + ' ' + persona.name?.last)}
                 color="danger"
               >
                 <IonIcon slot="icon-only" icon={trash} />
@@ -104,6 +127,9 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
         ))}
       </IonReorderGroup>
     </IonList>
+    }
+    </div>
+    
   );
 };
 
