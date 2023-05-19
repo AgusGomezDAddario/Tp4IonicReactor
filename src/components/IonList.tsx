@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
-<<<<<<< HEAD
-import { IonButton, useIonAlert } from '@ionic/react';
 import { Toast } from '@capacitor/toast';
-=======
 import { IonButton, IonContent, useIonAlert } from '@ionic/react';
->>>>>>> eb48501ffd5a9c31296355c5571d1e90c61c5191
 import {
   IonItem,
   IonLabel,
@@ -88,11 +84,8 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
             const newData = [...data];
             newData.splice(index, 1);
             setData(newData);
-<<<<<<< HEAD
             showHelloToast(); // Llama a la función para mostrar el toast
-=======
             setKey(prevKey => prevKey + 1); // Actualizamos la clave única
->>>>>>> eb48501ffd5a9c31296355c5571d1e90c61c5191
           },
         },
       ],
