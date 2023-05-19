@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { IonButton, useIonAlert } from '@ionic/react';
 import {
   IonItem,
   IonLabel,
@@ -22,6 +23,9 @@ interface ExampleProps {
 
 const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
   const [data, setData] = useState<any[]>([]);
+  const [presentAlert] = useIonAlert();
+  const [handlerMessage, setHandlerMessage] = useState('');
+  const [roleMessage, setRoleMessage] = useState('');
 
   useEffect(() => {
     fetch('https://randomuser.me/api/?results=10')
@@ -42,9 +46,29 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
   }
 
   function handleDeleteItem(index: number) {
-    const newData = [...data];
-    newData.splice(index, 1);
-    setData(newData);
+    presentAlert({
+      header: '¿Desea Eliminar?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            setHandlerMessage('Alert canceled');
+          },
+        },
+        {
+          text: 'Eliminar',
+          role: 'confirm',
+          handler: () => {
+            setHandlerMessage('Alert confirmed');
+            const newData = [...data];
+            newData.splice(index, 1);
+            setData(newData);
+          },
+        },
+      ],
+      onDidDismiss: (e: CustomEvent) => setRoleMessage(`Dismissed with role: ${e.detail.role}`),
+    })
   }
 
   return (
