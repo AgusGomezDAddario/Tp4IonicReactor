@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Toast } from '@capacitor/toast';
-import { IonButton, IonContent, useIonAlert } from '@ionic/react';
+import { IonButton, IonContent, IonToolbar, useIonAlert } from '@ionic/react';
 import { Preferences } from '@capacitor/preferences';
+import { IonSearchbar } from '@ionic/react';
 import {
   IonItem,
   IonLabel,
@@ -32,6 +33,7 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
   const [roleMessage, setRoleMessage] = useState('');
   const [key, setKey] = useState(0); // Agregamos una clave única
   const [load, setLoad] = useState(false);
+  let [results, setResults] = useState<any[]>([]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -61,6 +63,7 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
           // Obtener los datos de las preferencias
           const parsedData = datosExistentes !== null ? JSON.parse(datosExistentes) : null;
           setData(parsedData);
+          setResults(parsedData)
           setLoad(true);
         }
       };
@@ -68,7 +71,6 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
       fetchData(); // Llama a la función fetchData para iniciar el proceso
     }, 1000);
   }, []);
-  
 
   function handleReorder(event: CustomEvent<ItemReorderEventDetail>) {
     console.log('Dragged from index', event.detail.from, 'to', event.detail.to);
@@ -93,6 +95,7 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
             // Guardar los datos en las preferencias
             Preferences.set({ key: 'data', value: JSON.stringify(newData) });
             setData(newData);
+            setResults(newData) 
             console.log(data.results[0].picture.thumbnail);
             console.log(newData);
           });
@@ -120,6 +123,7 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
             // Guardar los datos en las preferencias
             Preferences.set({ key: 'data', value: JSON.stringify(newData) });
             setData(newData);
+            setResults(newData)
             console.log(data.results[0].picture.thumbnail);
             console.log(newData);
           });
@@ -146,6 +150,7 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
             // Guardar los datos en las preferencias
             Preferences.set({ key: 'data', value: JSON.stringify(newData) });
             setData(newData);
+            setResults(newData)
             console.log(data.results[0].picture.thumbnail);
             console.log(newData);
           });
@@ -173,17 +178,29 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
             const newData = [...data];
             newData.splice(index, 1);
             setData(newData);
+            setResults(newData)
             showHelloToast(); // Llama a la función para mostrar el toast
             setKey(prevKey => prevKey + 1); // Actualizamos la clave única
             console.log(newData);
             Preferences.set({ key: 'data', value: JSON.stringify(newData) });
             setData(newData);
+            setResults(newData)
           },
         },
       ],
       onDidDismiss: (e: CustomEvent) => setRoleMessage(`Dismissed with role: ${e.detail.role}`),
     });
   }
+
+  console.log(results)
+
+  const handleInput = (ev: Event) => {
+    let query = '';
+    const target = ev.target as HTMLIonSearchbarElement;
+    if (target) query = target.value!.toLowerCase();
+
+    setResults(data.filter((d) => d.name?.first.toLowerCase().indexOf(query) > -1));
+  };
   
 
   async function showHelloToast() {
@@ -193,11 +210,14 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
   }
   return (
     <div>
+      <IonToolbar>
+        <IonSearchbar debounce={1000} onIonInput={(ev) => handleInput(ev)} placeholder="Search by first name"></IonSearchbar>
+      </IonToolbar>
       {
         !load ? <Loader />
           : <IonList key={key}> {/* Utilizamos la clave única en la lista */}
             <IonReorderGroup disabled={false} onIonItemReorder={handleReorder}>
-              {data.map((persona, index) => (
+              {results.map((persona, index) => (
                 <IonItemSliding key={index}>
                   <IonItem
                     className="item"
