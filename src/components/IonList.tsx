@@ -39,7 +39,7 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
     setTimeout(() => {
       const fetchData = async () => {
         const { value: datosExistentes } = await Preferences.get({ key: 'data' });
-        if (datosExistentes === null || datosExistentes === 'null') {
+        if (datosExistentes === null || datosExistentes === 'null' || !datosExistentes) {
           fetch('https://randomuser.me/api/?results=10')
             .then(response => response.json())
             .then(data => {
@@ -67,10 +67,10 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
           setLoad(true);
         }
       };
-  
       fetchData(); // Llama a la función fetchData para iniciar el proceso
     }, 1000);
   }, []);
+  
 
   function handleReorder(event: CustomEvent<ItemReorderEventDetail>) {
     console.log('Dragged from index', event.detail.from, 'to', event.detail.to);
