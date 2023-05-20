@@ -33,8 +33,8 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
   const [load, setLoad] = useState(false);
 
   useEffect(() => {
-      setTimeout(() => {
-        if (!localStorage.getItem('data')) {
+    setTimeout(() => {
+      if (!localStorage.getItem('data')) {
         fetch('https://randomuser.me/api/?results=10')
           .then(response => response.json())
           .then(data => {
@@ -50,14 +50,14 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
           .finally(() => {
             setLoad(true);
           });
-        } else {
-          // Obtener los datos del localStorage
-          const storedData = localStorage.getItem('data');
-          const parsedData = storedData !== null ? JSON.parse(storedData) : null;
-          setData(parsedData);
-          setLoad(true);
-        }
-      }, 1000);
+      } else {
+        // Obtener los datos del localStorage
+        const storedData = localStorage.getItem('data');
+        const parsedData = storedData !== null ? JSON.parse(storedData) : null;
+        setData(parsedData);
+        setLoad(true);
+      }
+    }, 1000);
   }, []);
 
   function handleReorder(event: CustomEvent<ItemReorderEventDetail>) {
@@ -68,59 +68,60 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
   function agregar1Random() {
     const datosExistentes = localStorage.getItem('data');
     console.log(datosExistentes);
-    if(datosExistentes !== null) {
-    fetch('https://randomuser.me/api/?results=1')
-          .then(response => response.json())
-          .then(data => {
-            console.log(data.results[0]);
-            const datosArray = JSON.parse(datosExistentes);
-            const newData = [...datosArray, ...data.results];
-            // Guardar los datos en el localStorage
-            localStorage.setItem('data', JSON.stringify(newData));
-            setData(newData);
-            console.log(data.results[0].picture.thumbnail);
-            console.log(newData);
+    if (datosExistentes !== null) {
+      fetch('https://randomuser.me/api/?results=1')
+        .then(response => response.json())
+        .then(data => {
+          console.log(data.results[0]);
+          const datosArray = JSON.parse(datosExistentes);
+          const newData = [...datosArray, ...data.results];
+          // Guardar los datos en el localStorage
+          localStorage.setItem('data', JSON.stringify(newData));
+          setData(newData);
+          console.log(data.results[0].picture.thumbnail);
+          console.log(newData);
 
-          })
-  }}
+        })
+    }
+  }
 
   function agregar5Random() {
     const datosExistentes = localStorage.getItem('data');
     console.log(datosExistentes);
-    if(datosExistentes !== null) {
-    fetch('https://randomuser.me/api/?results=5')
-          .then(response => response.json())
-          .then(data => {
-            console.log(data.results[0]);
-            const datosArray = JSON.parse(datosExistentes);
-            const newData = [...datosArray, ...data.results];
-            // Guardar los datos en el localStorage
-            localStorage.setItem('data', JSON.stringify(newData));
-            setData(newData);
-            console.log(data.results[0].picture.thumbnail);
-            console.log(newData);
+    if (datosExistentes !== null) {
+      fetch('https://randomuser.me/api/?results=5')
+        .then(response => response.json())
+        .then(data => {
+          console.log(data.results[0]);
+          const datosArray = JSON.parse(datosExistentes);
+          const newData = [...datosArray, ...data.results];
+          // Guardar los datos en el localStorage
+          localStorage.setItem('data', JSON.stringify(newData));
+          setData(newData);
+          console.log(data.results[0].picture.thumbnail);
+          console.log(newData);
 
-          })
-  }
+        })
+    }
   }
   function agregar10Random() {
     const datosExistentes = localStorage.getItem('data');
     console.log(datosExistentes);
-    if(datosExistentes !== null) {
-    fetch('https://randomuser.me/api/?results=10')
-          .then(response => response.json())
-          .then(data => {
-            console.log(data.results[0]);
-            const datosArray = JSON.parse(datosExistentes);
-            const newData = [...datosArray, ...data.results];
-            // Guardar los datos en el localStorage
-            localStorage.setItem('data', JSON.stringify(newData));
-            setData(newData);
-            console.log(data.results[0].picture.thumbnail);
-            console.log(newData);
+    if (datosExistentes !== null) {
+      fetch('https://randomuser.me/api/?results=10')
+        .then(response => response.json())
+        .then(data => {
+          console.log(data.results[0]);
+          const datosArray = JSON.parse(datosExistentes);
+          const newData = [...datosArray, ...data.results];
+          // Guardar los datos en el localStorage
+          localStorage.setItem('data', JSON.stringify(newData));
+          setData(newData);
+          console.log(data.results[0].picture.thumbnail);
+          console.log(newData);
 
-          })
-  }
+        })
+    }
   }
 
   function handleDeleteItem(index: number, name: string) {
@@ -162,47 +163,47 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
   return (
     <div>
       {
-      !load ? <Loader /> 
-      : <IonList key={key}> {/* Utilizamos la clave única en la lista */}
-      <IonReorderGroup disabled={false} onIonItemReorder={handleReorder}>
-        {data.map((persona, index) => (
-          <IonItemSliding key={index}>
-            <IonItem
-              className="item"
-              button
-              onClick={() => {
-                setShowModal(true);
-                setPersona(persona);
-              }}
-            >
-              <IonLabel className="ionLabel">
-                <img src={persona.picture.thumbnail} alt="" className='perfilImg'/>
-                <p className="nombres">
-                  {persona.name?.first + ', ' + persona.name?.last}
-                </p>
-              </IonLabel>
-              <IonReorder slot="end" />
-            </IonItem>
-            <IonItemOptions side="end">
-              <IonItemOption
-                onClick={() => handleDeleteItem(index, persona.name?.first + ' ' + persona.name?.last)}
-                color="danger"
-              >
-                <IonIcon slot="icon-only" icon={trash} />
-              </IonItemOption>
-            </IonItemOptions>
-          </IonItemSliding>
-        ))}
-      </IonReorderGroup>
-    </IonList>
-    }
-     <div className='buttonsAdds'>
-      <IonButton onClick={agregar1Random}>+1</IonButton>
-      <IonButton onClick={agregar5Random}>+5</IonButton>
-      <IonButton onClick={agregar10Random}>+10</IonButton>
-      </div>
+        !load ? <Loader />
+          : <IonList key={key}> {/* Utilizamos la clave única en la lista */}
+            <IonReorderGroup disabled={false} onIonItemReorder={handleReorder}>
+              {data.map((persona, index) => (
+                <IonItemSliding key={index}>
+                  <IonItem
+                    className="item"
+                    button
+                    onClick={() => {
+                      setShowModal(true);
+                      setPersona(persona);
+                    }}
+                  >
+                    <IonLabel className="ionLabel">
+                      <img src={persona.picture.thumbnail} alt="" className='perfilImg' />
+                      <p className="nombres">
+                        {persona.name?.first + ', ' + persona.name?.last}
+                      </p>
+                    </IonLabel>
+                    <IonReorder slot="end" />
+                  </IonItem>
+                  <IonItemOptions side="end">
+                    <IonItemOption
+                      onClick={() => handleDeleteItem(index, persona.name?.first + ' ' + persona.name?.last)}
+                      color="danger"
+                    >
+                      <IonIcon slot="icon-only" icon={trash} />
+                    </IonItemOption>
+                  </IonItemOptions>
+                </IonItemSliding>
+              ))}
+            </IonReorderGroup>
+            <div className='buttonsAdds'>
+              <IonButton onClick={agregar1Random} className='button'>+1</IonButton>
+              <IonButton onClick={agregar5Random} className='button'>+5</IonButton>
+              <IonButton onClick={agregar10Random} className='button'>+10</IonButton>
+            </div>
+          </IonList>
+      }
     </div>
-    
+
   );
 };
 

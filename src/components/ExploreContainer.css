@@ -24,7 +24,13 @@
 
 .buttonsAdds {
     display: flex;
-    justify-content: flex-start;
+    justify-content: flex-end;
     width: 100%;
     padding-left: 1rem;
+    
+}
+
+.button{
+    margin-right: 1rem;
+    margin-top: 0.5rem;
 }
