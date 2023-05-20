@@ -78,7 +78,7 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
   function agregar1Random() {
     const fetchData = async () => {
       const { value: datosExistentes } = await Preferences.get({ key: 'data' });
-      if (datosExistentes === null) {
+      if (datosExistentes != null) {
         fetch('https://randomuser.me/api/?results=1')
           .then(response => response.json())
           .then(data => {
@@ -105,7 +105,7 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
   function agregar5Random() {
     const fetchData = async () => {
       const { value: datosExistentes } = await Preferences.get({ key: 'data' });
-      if (datosExistentes === null) {
+      if (datosExistentes != null) {
         fetch('https://randomuser.me/api/?results=5')
           .then(response => response.json())
           .then(data => {
@@ -131,7 +131,7 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
   function agregar10Random() {
     const fetchData = async () => {
       const { value: datosExistentes } = await Preferences.get({ key: 'data' });
-      if (datosExistentes === null) {
+      if (datosExistentes != null) {
         fetch('https://randomuser.me/api/?results=10')
           .then(response => response.json())
           .then(data => {
