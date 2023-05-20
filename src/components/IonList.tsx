@@ -58,6 +58,7 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
             })
             .catch(error => {
               console.log('Error:', error);
+              showErrorToast();
             })
             .finally(() => {
               setLoad(true);
@@ -163,7 +164,7 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
     fetchData();
   }
 
-  function handleDeleteItem(index: number, name: string) {
+  async function handleDeleteItem(index: number, name: string) {
     presentAlert({
       header: `¿Desea Eliminar a ${name}?`,
       buttons: [
@@ -177,18 +178,18 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
         {
           text: 'Eliminar',
           role: 'confirm',
-          handler: () => {
+          handler: async () => {
             setHandlerMessage('Alert confirmed');
             const newData = [...data];
             newData.splice(index, 1);
             setData(newData);
             setResults(newData)
-            showHelloToast(); // Llama a la función para mostrar el toast
             setKey(prevKey => prevKey + 1); // Actualizamos la clave única
             console.log(newData);
             Preferences.set({ key: 'data', value: JSON.stringify(newData) });
             setData(newData);
-            setResults(newData)
+            setResults(newData);
+            await showHelloToast(); // Llama a la función para mostrar el toast
           },
         },
       ],
@@ -208,8 +209,16 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
   
 
   async function showHelloToast() {
-    Toast.show({
+    await Toast.show({
       text: 'Eliminado con éxito!',
+      duration: 'short',
+    });
+  }
+
+  async function showErrorToast() {
+    await Toast.show({
+      text: 'Error al consultar Api',
+      duration: 'short',
     });
   }
   return (
