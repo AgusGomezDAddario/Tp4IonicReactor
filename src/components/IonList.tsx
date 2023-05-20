@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Toast } from '@capacitor/toast';
 import { IonButton, IonContent, useIonAlert } from '@ionic/react';
+import { Preferences } from '@capacitor/preferences';
 import {
   IonItem,
   IonLabel,
@@ -34,31 +35,40 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
 
   useEffect(() => {
     setTimeout(() => {
-      if (!localStorage.getItem('data')) {
-        fetch('https://randomuser.me/api/?results=10')
-          .then(response => response.json())
-          .then(data => {
-            console.log(data.results);
-            // Guardar los datos en el localStorage
-            localStorage.setItem('data', JSON.stringify(data.results));
-            setData(data.results);
-            console.log(data.results[0].picture.thumbnail);
-          })
-          .catch(error => {
-            console.log('Error:', error);
-          })
-          .finally(() => {
-            setLoad(true);
-          });
-      } else {
-        // Obtener los datos del localStorage
-        const storedData = localStorage.getItem('data');
-        const parsedData = storedData !== null ? JSON.parse(storedData) : null;
-        setData(parsedData);
-        setLoad(true);
-      }
+      const fetchData = async () => {
+        const { value: datosExistentes } = await Preferences.get({ key: 'data' });
+        if (datosExistentes === null || datosExistentes === 'null') {
+          fetch('https://randomuser.me/api/?results=10')
+            .then(response => response.json())
+            .then(data => {
+              console.log(data.results);
+              // Guardar los datos en las preferencias
+              const saveData = async () => {
+                await Preferences.set({
+                  key: 'data',
+                  value: JSON.stringify(data.results),
+                });
+              };
+              saveData(); // Llama a la función para guardar los datos
+            })
+            .catch(error => {
+              console.log('Error:', error);
+            })
+            .finally(() => {
+              setLoad(true);
+            });
+        } else {
+          // Obtener los datos de las preferencias
+          const parsedData = datosExistentes !== null ? JSON.parse(datosExistentes) : null;
+          setData(parsedData);
+          setLoad(true);
+        }
+      };
+  
+      fetchData(); // Llama a la función fetchData para iniciar el proceso
     }, 1000);
   }, []);
+  
 
   function handleReorder(event: CustomEvent<ItemReorderEventDetail>) {
     console.log('Dragged from index', event.detail.from, 'to', event.detail.to);
@@ -66,62 +76,82 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
   }
 
   function agregar1Random() {
-    const datosExistentes = localStorage.getItem('data');
-    console.log(datosExistentes);
-    if (datosExistentes !== null) {
-      fetch('https://randomuser.me/api/?results=1')
-        .then(response => response.json())
-        .then(data => {
-          console.log(data.results[0]);
-          const datosArray = JSON.parse(datosExistentes);
-          const newData = [...datosArray, ...data.results];
-          // Guardar los datos en el localStorage
-          localStorage.setItem('data', JSON.stringify(newData));
-          setData(newData);
-          console.log(data.results[0].picture.thumbnail);
-          console.log(newData);
-
-        })
-    }
+    const fetchData = async () => {
+      const { value: datosExistentes } = await Preferences.get({ key: 'data' });
+      if (datosExistentes === null) {
+        fetch('https://randomuser.me/api/?results=1')
+          .then(response => response.json())
+          .then(data => {
+            console.log(data.results[0]);
+            let newData = [];
+            if (datosExistentes) {
+              const parsedData = JSON.parse(datosExistentes);
+              newData = [...parsedData, ...data.results];
+            } else {
+              newData = data.results;
+            }
+            // Guardar los datos en las preferencias
+            Preferences.set({ key: 'data', value: JSON.stringify(newData) });
+            setData(newData);
+            console.log(data.results[0].picture.thumbnail);
+            console.log(newData);
+          });
+      }
+    };
+    fetchData();
   }
+  
 
   function agregar5Random() {
-    const datosExistentes = localStorage.getItem('data');
-    console.log(datosExistentes);
-    if (datosExistentes !== null) {
-      fetch('https://randomuser.me/api/?results=5')
-        .then(response => response.json())
-        .then(data => {
-          console.log(data.results[0]);
-          const datosArray = JSON.parse(datosExistentes);
-          const newData = [...datosArray, ...data.results];
-          // Guardar los datos en el localStorage
-          localStorage.setItem('data', JSON.stringify(newData));
-          setData(newData);
-          console.log(data.results[0].picture.thumbnail);
-          console.log(newData);
-
-        })
-    }
+    const fetchData = async () => {
+      const { value: datosExistentes } = await Preferences.get({ key: 'data' });
+      if (datosExistentes === null) {
+        fetch('https://randomuser.me/api/?results=5')
+          .then(response => response.json())
+          .then(data => {
+            console.log(data.results[0]);
+            let newData = [];
+            if (datosExistentes) {
+              const parsedData = JSON.parse(datosExistentes);
+              newData = [...parsedData, ...data.results];
+            } else {
+              newData = data.results;
+            }
+            // Guardar los datos en las preferencias
+            Preferences.set({ key: 'data', value: JSON.stringify(newData) });
+            setData(newData);
+            console.log(data.results[0].picture.thumbnail);
+            console.log(newData);
+          });
+      }
+    };
+    fetchData();
   }
-  function agregar10Random() {
-    const datosExistentes = localStorage.getItem('data');
-    console.log(datosExistentes);
-    if (datosExistentes !== null) {
-      fetch('https://randomuser.me/api/?results=10')
-        .then(response => response.json())
-        .then(data => {
-          console.log(data.results[0]);
-          const datosArray = JSON.parse(datosExistentes);
-          const newData = [...datosArray, ...data.results];
-          // Guardar los datos en el localStorage
-          localStorage.setItem('data', JSON.stringify(newData));
-          setData(newData);
-          console.log(data.results[0].picture.thumbnail);
-          console.log(newData);
 
-        })
-    }
+  function agregar10Random() {
+    const fetchData = async () => {
+      const { value: datosExistentes } = await Preferences.get({ key: 'data' });
+      if (datosExistentes === null) {
+        fetch('https://randomuser.me/api/?results=10')
+          .then(response => response.json())
+          .then(data => {
+            console.log(data.results[0]);
+            let newData = [];
+            if (datosExistentes) {
+              const parsedData = JSON.parse(datosExistentes);
+              newData = [...parsedData, ...data.results];
+            } else {
+              newData = data.results;
+            }
+            // Guardar los datos en las preferencias
+            Preferences.set({ key: 'data', value: JSON.stringify(newData) });
+            setData(newData);
+            console.log(data.results[0].picture.thumbnail);
+            console.log(newData);
+          });
+      }
+    };
+    fetchData();
   }
 
   function handleDeleteItem(index: number, name: string) {
@@ -146,7 +176,7 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
             showHelloToast(); // Llama a la función para mostrar el toast
             setKey(prevKey => prevKey + 1); // Actualizamos la clave única
             console.log(newData);
-            localStorage.setItem('data', JSON.stringify(newData));
+            Preferences.set({ key: 'data', value: JSON.stringify(newData) });
             setData(newData);
           },
         },
@@ -154,6 +184,7 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
       onDidDismiss: (e: CustomEvent) => setRoleMessage(`Dismissed with role: ${e.detail.role}`),
     });
   }
+  
 
   async function showHelloToast() {
     Toast.show({
