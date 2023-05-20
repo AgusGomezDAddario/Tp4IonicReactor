@@ -39,11 +39,12 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
     setTimeout(() => {
       const fetchData = async () => {
         const { value: datosExistentes } = await Preferences.get({ key: 'data' });
-        if (datosExistentes === null || datosExistentes === 'null' || !datosExistentes) {
+        if (datosExistentes === null || datosExistentes === 'null' || !datosExistentes || datosExistentes === '[]') {
           fetch('https://randomuser.me/api/?results=10')
             .then(response => response.json())
             .then(data => {
               console.log(data.results);
+              console.log(45000)
               // Guardar los datos en las preferencias
               const saveData = async () => {
                 await Preferences.set({
@@ -52,6 +53,8 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
                 });
               };
               saveData(); // Llama a la función para guardar los datos
+              setData(data.results);
+              setResults(data.results)
             })
             .catch(error => {
               console.log('Error:', error);
@@ -65,11 +68,12 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
           setData(parsedData);
           setResults(parsedData)
           setLoad(true);
+          console.log(45000000)
         }
       };
       fetchData(); // Llama a la función fetchData para iniciar el proceso
     }, 1000);
-  }, []);
+  },[]);
   
 
   function handleReorder(event: CustomEvent<ItemReorderEventDetail>) {
