@@ -48,7 +48,6 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
           setData(parsedData);
           setResults(parsedData)
           setLoad(true);
-          console.log(45000000)
         }
       };
       fetchData(); // Llama a la función fetchData para iniciar el proceso
@@ -92,7 +91,6 @@ async function handleDeleteItem(index: number, name: string) {
           setData(newData);
           setResults(newData)
           setKey(prevKey => prevKey + 1); // Actualizamos la clave única
-          console.log(newData);
           Preferences.set({ key: 'data', value: JSON.stringify(newData) });
           setData(newData);
           setResults(newData);
@@ -106,8 +104,6 @@ async function handleDeleteItem(index: number, name: string) {
     onDidDismiss: (e: CustomEvent) => setRoleMessage(`Dismissed with role: ${e.detail.role}`),
   });
 }
-
-console.log(results)
 
 const handleInput = (ev: Event) => {
   let query = '';

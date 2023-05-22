@@ -8,7 +8,6 @@ const Home: React.FC = () => {
   
   const [showModal, setShowModal] = useState(false);
   const [persona, setPersona] = useState<any[]>([]);
-  console.log(showModal)
 
   return (
     <IonPage>
