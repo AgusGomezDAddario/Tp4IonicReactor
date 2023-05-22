@@ -11,4 +11,7 @@ export default defineConfig({
   build: {
     outDir: 'dist', // Nombre del directorio de salida deseado
   },
+  optimizeDeps: {
+    exclude: [`@ionic/pwa-elements/loader`],
+  },
 });
