@@ -88,8 +88,7 @@ async function handleDeleteItem(index: number, name: string) {
         role: 'confirm',
         handler: async () => {
           setHandlerMessage('Alert confirmed');
-          const newData = [...data];
-          newData.splice(index, 1);
+          const newData = data.filter((element) => element !== results[index]);
           setData(newData);
           setResults(newData)
           setKey(prevKey => prevKey + 1); // Actualizamos la clave única
