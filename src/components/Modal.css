@@ -1,11 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
 .imagen{
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 2rem;
-    padding-bottom: 2rem;
+    padding-bottom: 0.5rem;
+    padding-top: 1rem;
 }
 
-.texto{
-    font-family: sans-serif;
+.perfil{
+    height: 50%;
+    width: 50%;
+}
+
+.fuente{
+    font-family: 'Roboto', sans-serif;
+}
+
+.nombre{
+    font-size: 2rem;
+    padding: 0 0 0 1rem;
+}
+
+.infoPersonal{
+    padding: 0 0 0.5rem 3rem;
+    color: grey;
+}
+
+.ion-margin-top{
+    background-color: #1e1e1e !important;
+    border-radius: 1rem;
 }

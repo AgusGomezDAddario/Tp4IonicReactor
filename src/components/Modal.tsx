@@ -28,17 +28,23 @@ const ExampleModal = ({ setShowModal, showModal, persona }: ExampleProps) => {
       isOpen={showModal}
       onDidDismiss={dismiss}
       initialBreakpoint={0.25}
-      breakpoints={[0, 0.25, 0.5, 0.75]}
+      breakpoints={[0, 0.25, 0.5, 0.75, 0.95]}
       handleBehavior="cycle"
     >
       <IonContent className="ion-padding">
         <div className="ion-margin-top">
-          <div className="imagen"> <img src={persona.picture.large} alt="" /> </div>
+          <div className="imagen"> <img className="perfil" src={persona.picture.large} alt="" /> </div>
           <div className="texto">
-            <p>Nombre: {persona.name?.first}</p>
-            <p>Apellido: {persona.name?.last}</p>
-            <p>Género: {persona.gender}</p>
-            <p>Email: {persona.email}</p>
+            <h1 className='fuente nombre'>{persona.name?.first + " " + persona.name?.last}</h1>
+            <div className='infoPersonal'>
+              <p className='fuente'>- Edad: {persona.dob.age}</p>
+              <p className='fuente'>- Email: {persona.email}</p>
+              <p className='fuente'>- Pais: {persona.location.country}</p>
+              <p className='fuente'>- Ciudad: {persona.location.city}</p>
+              <p className='fuente'>- Calle: {persona.location.street.name + ' ' + persona.location.street.number}</p>
+              <p className='fuente'>- Código Postal: {persona.location.postcode}</p>
+              <p className='fuente'>- Teléfono: {persona.cell}</p>
+            </div>
           </div>
         </div>
       </IonContent>
