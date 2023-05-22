@@ -42,8 +42,6 @@ const ExampleModal = ({ setShowModal, showModal, persona }: ExampleProps) => {
               <p className='fuente'>- Pais: {persona.location.country}</p>
               <p className='fuente'>- Ciudad: {persona.location.city}</p>
               <p className='fuente'>- Calle: {persona.location.street.name + ' ' + persona.location.street.number}</p>
-              <p className='fuente'>- Código Postal: {persona.location.postcode}</p>
-              <p className='fuente'>- Teléfono: {persona.cell}</p>
             </div>
           </div>
         </div>
