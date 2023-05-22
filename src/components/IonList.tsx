@@ -19,6 +19,7 @@ import {
 import { trash } from 'ionicons/icons';
 import Loader from './loader';
 import './ExploreContainer.css';
+import { api, apiWith1or5or10 } from '../api/api';
 
 interface ExampleProps {
   setShowModal: Function;
@@ -40,29 +41,7 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
       const fetchData = async () => {
         const { value: datosExistentes } = await Preferences.get({ key: 'data' });
         if (datosExistentes === null || datosExistentes === 'null' || !datosExistentes || datosExistentes === '[]') {
-          fetch('https://randomuser.me/api/?results=10')
-            .then(response => response.json())
-            .then(data => {
-              console.log(data.results);
-              console.log(45000)
-              // Guardar los datos en las preferencias
-              const saveData = async () => {
-                await Preferences.set({
-                  key: 'data',
-                  value: JSON.stringify(data.results),
-                });
-              };
-              saveData(); // Llama a la función para guardar los datos
-              setData(data.results);
-              setResults(data.results)
-            })
-            .catch(error => {
-              console.log('Error:', error);
-              showErrorToast();
-            })
-            .finally(() => {
-              setLoad(true);
-            });
+          api({ showErrorToast, setData, setResults, setLoad });
         } else {
           // Obtener los datos de las preferencias
           const parsedData = datosExistentes !== null ? JSON.parse(datosExistentes) : null;
@@ -82,110 +61,15 @@ const Example = ({ setShowModal, setPersona, persona }: ExampleProps) => {
     event.detail.complete();
   }
 
-  function agregar1Random() {
+  function agregarRandom(cant:Number) {
     const fetchData = async () => {
       const { value: datosExistentes } = await Preferences.get({ key: 'data' });
       if (datosExistentes != null) {
         setLoad(false);
-        fetch('https://randomuser.me/api/?results=1')
-          .then(response => response.json())
-          .then(data => {
-            console.log(data.results[0]);
-            let newData = [];
-            if (datosExistentes) {
-              const parsedData = JSON.parse(datosExistentes);
-              newData = [...parsedData, ...data.results];
-            } else {
-              newData = data.results;
-            }
-            // Guardar los datos en las preferencias
-            Preferences.set({ key: 'data', value: JSON.stringify(newData) });
-            setData(newData);
-            setResults(newData)
-            console.log(data.results[0].picture.thumbnail);
-            console.log(newData);
-          })
-          .catch(error => {
-            console.log('Error:', error);
-            showErrorToast();
-          })
-          .finally(() => {
-            setLoad(true);
-          });
+        apiWith1or5or10({ showErrorToast, setData, setResults, setLoad }, datosExistentes, cant);
       }
     };
     fetchData();
-  }
-
-
-  function agregar5Random() {
-    const fetchData = async () => {
-      const { value: datosExistentes } = await Preferences.get({ key: 'data' });
-      if (datosExistentes != null) {
-        setLoad(false);
-        fetch('https://randomuser.me/api/?results=5')
-          .then(response => response.json())
-          .then(data => {
-            console.log(data.results[0]);
-            let newData = [];
-            if (datosExistentes) {
-              const parsedData = JSON.parse(datosExistentes);
-              newData = [...parsedData, ...data.results];
-            } else {
-              newData = data.results;
-            }
-            // Guardar los datos en las preferencias
-            Preferences.set({ key: 'data', value: JSON.stringify(newData) });
-            setData(newData);
-            setResults(newData)
-            console.log(data.results[0].picture.thumbnail);
-            console.log(newData);
-          })
-          .catch(error => {
-            console.log('Error:', error);
-            showErrorToast();
-          })
-          .finally(() => {
-            setLoad(true);
-          });
-      }
-    };
-    fetchData();
-  }
-
-  function agregar10Random() {
-    const fetchData = async () => {
-      const { value: datosExistentes } = await Preferences.get({ key: 'data' });
-      if (datosExistentes != null) {
-        setLoad(false);
-        fetch('https://randomuser.me/api/?results=10')
-          .then(response => response.json())
-          .then(data => {
-            console.log(data.results[0]);
-            let newData = [];
-            if (datosExistentes) {
-              const parsedData = JSON.parse(datosExistentes);
-              newData = [...parsedData, ...data.results];
-            } else {
-              newData = data.results;
-            }
-            // Guardar los datos en las preferencias
-            Preferences.set({ key: 'data', value: JSON.stringify(newData) });
-            setData(newData);
-            setResults(newData)
-            console.log(data.results[0].picture.thumbnail);
-            console.log(newData);
-          })
-          .catch(error => {
-            console.log('Error:', error);
-            showErrorToast();
-          })
-          .finally(() => {
-            setLoad(true);
-          });
-      }
-    };
-fetchData();
   }
 
 async function handleDeleteItem(index: number, name: string) {
@@ -240,6 +124,7 @@ async function showErrorToast() {
     duration: 'short',
   });
 }
+
 return (
   <div>
     <IonToolbar>
@@ -279,9 +164,9 @@ return (
             ))}
           </IonReorderGroup>
           <div className='buttonsAdds'>
-            <IonButton onClick={agregar1Random} className='button'>+1</IonButton>
-            <IonButton onClick={agregar5Random} className='button'>+5</IonButton>
-            <IonButton onClick={agregar10Random} className='button'>+10</IonButton>
+            <IonButton onClick={ () => {agregarRandom(1)}} className='button'>+1</IonButton>
+            <IonButton onClick={ () => {agregarRandom(5)}} className='button'>+5</IonButton>
+            <IonButton onClick={ () => {agregarRandom(10)}} className='button'>+10</IonButton>
           </div>
         </IonList>
     }
